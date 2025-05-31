@@ -28,8 +28,8 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-	// DB - 개발용 H2
-	runtimeOnly("com.h2database:h2")
+	// MySQL
+	runtimeOnly("com.mysql:mysql-connector-j")
 
 	// 테스트
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
