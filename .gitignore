@@ -16,7 +16,6 @@
 .gradle/
 gradle-app.setting
 gradle.properties
-**/gradle-wrapper.jar
 
 # IDE (IntelliJ)
 .idea/
