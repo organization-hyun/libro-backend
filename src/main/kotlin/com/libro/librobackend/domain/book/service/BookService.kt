@@ -1,6 +1,6 @@
 package com.libro.librobackend.domain.book.service
 
-import com.libro.librobackend.domain.book.controller.rqrs.BookRs
+import com.libro.librobackend.domain.book.entity.Book
 import com.libro.librobackend.domain.book.repository.BookRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,7 +12,12 @@ class BookService(
 ) {
 
     @Transactional(readOnly = true)
-    fun getBooksByUser(userId: Long): List<BookRs> =
-        bookRepository.findAllByUserId(userId).map { BookRs.from(it) }
+    fun getBooksByUser(userId: Long): List<Book> =
+        bookRepository.findAllByUserId(userId)
+
+    fun getBookById(bookId: Long): Book {
+        return bookRepository.findById(bookId).orElseThrow()
+
+    }
 
 }
