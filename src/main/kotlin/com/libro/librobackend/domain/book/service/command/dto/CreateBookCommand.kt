@@ -1,4 +1,4 @@
-package com.libro.librobackend.domain.book.service.dto
+package com.libro.librobackend.domain.book.service.command.dto
 
 data class CreateBookCommand(
     val userId: Long,

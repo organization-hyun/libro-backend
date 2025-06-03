@@ -1,6 +1,6 @@
 package com.libro.librobackend.domain.book.controller.rqrs
 
-import com.libro.librobackend.domain.book.service.dto.CreateBookCommand
+import com.libro.librobackend.domain.book.service.command.dto.CreateBookCommand
 
 data class CreateBookRq(
     val userId: Long,
