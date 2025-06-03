@@ -9,8 +9,9 @@ data class BookRs(
 ) {
     companion object {
         fun from(book: Book): BookRs {
+            val bookId = requireNotNull(book.id)
             return BookRs(
-                id = book.id,
+                id = bookId,
                 title = book.title,
                 author = book.author
             )
