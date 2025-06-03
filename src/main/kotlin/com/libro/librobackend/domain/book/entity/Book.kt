@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-data class Book(
+class Book(
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
