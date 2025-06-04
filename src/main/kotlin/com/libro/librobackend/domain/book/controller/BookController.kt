@@ -2,7 +2,9 @@ package com.libro.librobackend.domain.book.controller
 
 import com.libro.librobackend.domain.book.controller.rqrs.BookRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
+import com.libro.librobackend.domain.book.controller.rqrs.CreateNoteRq
 import com.libro.librobackend.domain.book.service.command.BookCommandService
+import com.libro.librobackend.domain.book.service.command.NoteCommandService
 import com.libro.librobackend.domain.book.service.query.BookQueryService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*
 class BookController(
     private val bookQueryService: BookQueryService,
     private val bookCommandService: BookCommandService,
+    private val noteCommandService: NoteCommandService
 ) {
 
     @Operation(summary = "도서 목록 조회")
@@ -41,6 +44,13 @@ class BookController(
     fun deleteBook(@PathVariable bookId: Long): ResponseEntity<Void> {
         bookCommandService.deleteBook(bookId)
         return ResponseEntity.noContent().build()
+    }
+
+    @Operation(summary = "독서 기록 추가")
+    @PostMapping("/{bookId}/note")
+    fun saveNote(@PathVariable bookId: Long, @RequestBody rq: CreateNoteRq): ResponseEntity<Long> {
+        val noteId = noteCommandService.saveNote(rq.toCommand(bookId))
+        return ResponseEntity.ok(noteId)
     }
 
 }
