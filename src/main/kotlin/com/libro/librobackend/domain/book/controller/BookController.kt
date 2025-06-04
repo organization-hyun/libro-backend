@@ -36,4 +36,11 @@ class BookController(
         return ResponseEntity.ok(bookId)
     }
 
+    @Operation(summary = "도서 삭제")
+    @DeleteMapping("/{bookId}")
+    fun deleteBook(@PathVariable bookId: Long): ResponseEntity<Void> {
+        bookCommandService.deleteBook(bookId)
+        return ResponseEntity.noContent().build()
+    }
+
 }

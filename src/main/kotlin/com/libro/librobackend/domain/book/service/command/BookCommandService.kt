@@ -21,4 +21,8 @@ class BookCommandService(
         return bookRepository.save(book).id
     }
 
+    fun deleteBook(bookId: Long) {
+        bookRepository.deleteById(bookId)
+    }
+
 }
