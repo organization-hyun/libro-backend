@@ -3,9 +3,11 @@ package com.libro.librobackend.domain.book.controller
 import com.libro.librobackend.domain.book.controller.rqrs.BookRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
 import com.libro.librobackend.domain.book.controller.rqrs.CreateNoteRq
+import com.libro.librobackend.domain.book.controller.rqrs.NoteRs
 import com.libro.librobackend.domain.book.service.command.BookCommandService
 import com.libro.librobackend.domain.book.service.command.NoteCommandService
 import com.libro.librobackend.domain.book.service.query.BookQueryService
+import com.libro.librobackend.domain.book.service.query.NoteQueryService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*
 class BookController(
     private val bookQueryService: BookQueryService,
     private val bookCommandService: BookCommandService,
+    private val noteQueryService: NoteQueryService,
     private val noteCommandService: NoteCommandService
 ) {
 
@@ -51,6 +54,13 @@ class BookController(
     fun saveNote(@PathVariable bookId: Long, @RequestBody rq: CreateNoteRq): ResponseEntity<Long> {
         val noteId = noteCommandService.saveNote(rq.toCommand(bookId))
         return ResponseEntity.ok(noteId)
+    }
+
+    @Operation(summary = "독서 기록 조회")
+    @GetMapping("/{bookId}/notes")
+    fun getNotes(@PathVariable bookId: Long): ResponseEntity<List<NoteRs>> {
+        val notes = noteQueryService.getNotesByBookId(bookId)
+        return ResponseEntity.ok(notes.map { NoteRs.from(it) })
     }
 
 }
