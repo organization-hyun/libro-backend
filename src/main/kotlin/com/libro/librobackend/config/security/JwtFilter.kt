@@ -23,8 +23,8 @@ class JwtFilter(
     ) {
         val token = request.getHeader("Authorization")?.substringAfter("Bearer ")
         if (token != null && jwtUtil.validateToken(token)) {
-            val email = jwtUtil.getEmailFromToken(token)
-            val user = userRepository.findByEmail(email)
+            val userId = jwtUtil.getUserIdFromToken(token)
+            val user = userRepository.findById(userId)
             val auth = UsernamePasswordAuthenticationToken(user, null, emptyList())
             SecurityContextHolder.getContext().authentication = auth
         }

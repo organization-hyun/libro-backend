@@ -29,6 +29,6 @@ class AuthService(
             throw IllegalArgumentException("비밀번호가 틀렸습니다.")
         }
 
-        return jwtUtil.generateToken(user.email)
+        return jwtUtil.generateToken(requireNotNull(user.id))
     }
 }

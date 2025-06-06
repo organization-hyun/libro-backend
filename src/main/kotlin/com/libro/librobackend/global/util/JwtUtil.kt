@@ -20,9 +20,9 @@ class JwtUtil(
 ) {
     private val key: Key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret))
 
-    fun generateToken(email: String): String =
+    fun generateToken(userId: Long): String =
         Jwts.builder()
-            .setSubject(email)
+            .setSubject(userId.toString())
             .setIssuedAt(Date())
             .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간
             .signWith(key)
@@ -48,7 +48,7 @@ class JwtUtil(
             false
         }
 
-    fun getEmailFromToken(token: String): String = getClaims(token).subject
+    fun getUserIdFromToken(token: String): Long = getClaims(token).subject.toLong()
 
     private fun getClaims(token: String): Claims =
         Jwts.parserBuilder()
