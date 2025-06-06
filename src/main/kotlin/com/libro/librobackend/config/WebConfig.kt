@@ -1,8 +1,9 @@
 package com.libro.librobackend.config
 
-import org.springframework.beans.factory.annotation.Value
+import com.libro.librobackend.config.security.resolver.CurrentUserIdArgumentResolver
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
@@ -19,6 +20,10 @@ class WebConfig(
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true)
+            }
+
+            override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
+                resolvers.add(CurrentUserIdArgumentResolver())
             }
         }
     }
