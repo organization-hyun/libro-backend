@@ -1,6 +1,7 @@
 package com.libro.librobackend.domain.user.controller
 
 import com.libro.librobackend.domain.user.controller.rqrs.LoginRq
+import com.libro.librobackend.domain.user.controller.rqrs.LoginRs
 import com.libro.librobackend.domain.user.controller.rqrs.SignupRq
 import com.libro.librobackend.domain.user.service.AuthService
 import io.swagger.v3.oas.annotations.Operation
@@ -22,9 +23,9 @@ class AuthController(
 
     @Operation(summary = "로그인")
     @PostMapping("/login")
-    fun login(@RequestBody request: LoginRq): ResponseEntity<Map<String, String>> {
+    fun login(@RequestBody request: LoginRq): ResponseEntity<LoginRs> {
         val token = authService.login(request.email, request.password)
-        return ResponseEntity.ok(mapOf("token" to token))
+        return ResponseEntity.ok(LoginRs(token))
     }
 
 }
