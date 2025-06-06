@@ -1,11 +1,16 @@
 package com.libro.librobackend.global.util
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.security.Keys
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.security.Key
+import java.security.SignatureException
 import java.util.*
 
 @Component
@@ -23,11 +28,23 @@ class JwtUtil(
             .signWith(key)
             .compact()
 
+    private val log: Logger = LoggerFactory.getLogger(JwtUtil::class.java)
+
     fun validateToken(token: String): Boolean =
         try {
             getClaims(token)
             true
+        } catch (e: ExpiredJwtException) {
+            log.warn("Expired JWT token: ${e.message}")
+            false
+        } catch (e: MalformedJwtException) {
+            log.warn("Malformed JWT token: ${e.message}")
+            false
+        } catch (e: SignatureException) {
+            log.warn("Invalid JWT signature: ${e.message}")
+            false
         } catch (e: Exception) {
+            log.error("Unknown JWT validation error", e)
             false
         }
 
