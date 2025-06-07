@@ -1,5 +1,6 @@
 package com.libro.librobackend.domain.book.controller
 
+import com.libro.librobackend.config.security.annotation.CurrentUserId
 import com.libro.librobackend.domain.book.controller.rqrs.BookRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
 import com.libro.librobackend.domain.book.controller.rqrs.CreateNoteRq
@@ -23,7 +24,7 @@ class BookController(
 
     @Operation(summary = "도서 목록 조회")
     @GetMapping
-    fun getBooks(@RequestParam userId: Long): ResponseEntity<List<BookRs>> {
+    fun getBooks(@CurrentUserId userId: Long): ResponseEntity<List<BookRs>> {
         val books = bookQueryService.getBooksByUser(userId)
         return ResponseEntity.ok(books.map { BookRs.from(it) })
     }
@@ -37,8 +38,8 @@ class BookController(
 
     @Operation(summary = "도서 등록")
     @PostMapping
-    fun saveBook(@RequestBody rq: CreateBookRq): ResponseEntity<Long> {
-        val bookId = bookCommandService.saveBook(rq.toCommand())
+    fun saveBook(@CurrentUserId userId: Long, @RequestBody rq: CreateBookRq): ResponseEntity<Long> {
+        val bookId = bookCommandService.saveBook(rq.toCommand(userId))
         return ResponseEntity.ok(bookId)
     }
 
