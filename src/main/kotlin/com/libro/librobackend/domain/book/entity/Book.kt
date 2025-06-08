@@ -13,4 +13,8 @@ class Book(
     val userId: Long,
     val title: String,
     val author: String,
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+    fun isOwnedBy(userId: Long): Boolean {
+        return this.userId == userId
+    }
+}
