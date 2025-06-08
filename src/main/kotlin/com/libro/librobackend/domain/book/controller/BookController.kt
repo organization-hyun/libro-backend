@@ -3,6 +3,7 @@ package com.libro.librobackend.domain.book.controller
 import com.libro.librobackend.config.security.annotation.CurrentUserId
 import com.libro.librobackend.domain.book.controller.rqrs.BookRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
+import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateNoteRq
 import com.libro.librobackend.domain.book.controller.rqrs.NoteRs
 import com.libro.librobackend.domain.book.service.command.BookCommandService
@@ -38,9 +39,9 @@ class BookController(
 
     @Operation(summary = "도서 등록")
     @PostMapping
-    fun saveBook(@CurrentUserId userId: Long, @RequestBody rq: CreateBookRq): ResponseEntity<Long> {
+    fun saveBook(@CurrentUserId userId: Long, @RequestBody rq: CreateBookRq): ResponseEntity<CreateBookRs> {
         val bookId = bookCommandService.saveBook(rq.toCommand(userId))
-        return ResponseEntity.ok(bookId)
+        return ResponseEntity.ok(CreateBookRs(bookId))
     }
 
     @Operation(summary = "도서 삭제")
