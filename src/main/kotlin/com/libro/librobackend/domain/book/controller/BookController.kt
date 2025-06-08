@@ -4,6 +4,7 @@ import com.libro.librobackend.config.security.annotation.CurrentUserId
 import com.libro.librobackend.domain.book.controller.rqrs.*
 import com.libro.librobackend.domain.book.service.command.BookCommandService
 import com.libro.librobackend.domain.book.service.command.NoteCommandService
+import com.libro.librobackend.domain.book.service.command.dto.NoteDeleteCommand
 import com.libro.librobackend.domain.book.service.query.BookQueryService
 import com.libro.librobackend.domain.book.service.query.NoteQueryService
 import io.swagger.v3.oas.annotations.Operation
@@ -63,6 +64,17 @@ class BookController(
     fun getNotes(@PathVariable bookId: Long): ResponseEntity<List<NoteRs>> {
         val notes = noteQueryService.getNotesByBookId(bookId)
         return ResponseEntity.ok(notes.map { NoteRs.from(it) })
+    }
+
+    @Operation(summary = "기록 삭제")
+    @DeleteMapping("/{bookId}/notes/{noteId}")
+    fun deleteNote(
+        @CurrentUserId userId: Long,
+        @PathVariable bookId: Long,
+        @PathVariable noteId: Long
+    ): ResponseEntity<Void> {
+        noteCommandService.delete(NoteDeleteCommand(userId, bookId, noteId))
+        return ResponseEntity.noContent().build()
     }
 
 }

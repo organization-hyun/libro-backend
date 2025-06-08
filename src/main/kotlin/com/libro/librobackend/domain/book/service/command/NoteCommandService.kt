@@ -31,8 +31,7 @@ class NoteCommandService(
     }
 
     fun delete(command: NoteDeleteCommand) {
-        val note = noteRepository.findById(command.noteId).orElseThrow()
-        val book = bookRepository.findById(note.bookId).orElseThrow()
+        val book = bookRepository.findById(command.bookId).orElseThrow()
 
         if (!book.isOwnedBy(command.userId)) {
             throw IllegalArgumentException("권한이 없는 사용자입니다.")
