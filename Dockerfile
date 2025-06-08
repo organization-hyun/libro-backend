@@ -1,20 +1,11 @@
-# 1단계: Gradle 빌드 (래퍼 사용)
-FROM gradle:8.3.0-jdk17 AS build
-WORKDIR /app
+# 1. Java 17 JDK 이미지 사용
+FROM eclipse-temurin:17-jdk-alpine
 
-COPY . .
+# 2. 작업 디렉토리 설정
+WORKDIR /app/libro
 
-# gradle 래퍼가 있는 경우 아래처럼 실행
-RUN ./gradlew bootJar --no-daemon
+# 3. 빌드된 JAR 파일 복사
+COPY libro-backend-0.0.1-SNAPSHOT.jar app.jar
 
-# 2단계: 실행용 이미지
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-
-# 환경 변수 추가: 프로덕션 환경 사용
-ENV SPRING_PROFILES_ACTIVE=prod
-
-COPY --from=build /app/build/libs/*.jar app.jar
-
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 4. 애플리케이션 실행 명령어 (dev 프로파일 활성화)
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=local"]
