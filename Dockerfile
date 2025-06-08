@@ -8,4 +8,4 @@ WORKDIR /app/libro
 COPY libro-backend-0.0.1-SNAPSHOT.jar app.jar
 
 # 4. 애플리케이션 실행 명령어 (dev 프로파일 활성화)
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=local"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
