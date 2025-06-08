@@ -12,13 +12,13 @@ class BookCommandService(
     private val bookRepository: BookRepository
 ) {
 
-    fun saveBook(command: CreateBookCommand): Long? {
+    fun saveBook(command: CreateBookCommand): Long {
         val book = Book(
             title = command.title,
             author = command.author,
             userId = command.userId
         )
-        return bookRepository.save(book).id
+        return requireNotNull(bookRepository.save(book).id)
     }
 
     fun deleteBook(bookId: Long) {
