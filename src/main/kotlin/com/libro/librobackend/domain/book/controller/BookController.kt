@@ -1,11 +1,7 @@
 package com.libro.librobackend.domain.book.controller
 
 import com.libro.librobackend.config.security.annotation.CurrentUserId
-import com.libro.librobackend.domain.book.controller.rqrs.BookRs
-import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
-import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRs
-import com.libro.librobackend.domain.book.controller.rqrs.CreateNoteRq
-import com.libro.librobackend.domain.book.controller.rqrs.NoteRs
+import com.libro.librobackend.domain.book.controller.rqrs.*
 import com.libro.librobackend.domain.book.service.command.BookCommandService
 import com.libro.librobackend.domain.book.service.command.NoteCommandService
 import com.libro.librobackend.domain.book.service.query.BookQueryService
@@ -53,9 +49,9 @@ class BookController(
 
     @Operation(summary = "독서 기록 추가")
     @PostMapping("/{bookId}/note")
-    fun saveNote(@PathVariable bookId: Long, @RequestBody rq: CreateNoteRq): ResponseEntity<Long> {
+    fun saveNote(@PathVariable bookId: Long, @RequestBody rq: CreateNoteRq): ResponseEntity<CreateNoteRs> {
         val noteId = noteCommandService.saveNote(rq.toCommand(bookId))
-        return ResponseEntity.ok(noteId)
+        return ResponseEntity.ok(CreateNoteRs(noteId))
     }
 
     @Operation(summary = "독서 기록 조회")

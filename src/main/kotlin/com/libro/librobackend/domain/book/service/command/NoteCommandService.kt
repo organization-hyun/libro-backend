@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional
 class NoteCommandService(
     private val noteRepository: NoteRepository
 ) {
-    fun saveNote(command: CreateNoteCommand): Long? {
+    fun saveNote(command: CreateNoteCommand): Long {
         val note = Note(
             bookId = command.bookId,
             content = command.content
         )
-        return noteRepository.save(note).id
+        return requireNotNull(noteRepository.save(note).id)
     }
 
 }
