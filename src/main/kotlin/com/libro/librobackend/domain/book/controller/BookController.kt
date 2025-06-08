@@ -49,8 +49,12 @@ class BookController(
 
     @Operation(summary = "독서 기록 추가")
     @PostMapping("/{bookId}/note")
-    fun saveNote(@PathVariable bookId: Long, @RequestBody rq: CreateNoteRq): ResponseEntity<CreateNoteRs> {
-        val noteId = noteCommandService.saveNote(rq.toCommand(bookId))
+    fun saveNote(
+        @CurrentUserId userId: Long,
+        @PathVariable bookId: Long,
+        @RequestBody rq: CreateNoteRq
+    ): ResponseEntity<CreateNoteRs> {
+        val noteId = noteCommandService.saveNote(rq.toCommand(userId, bookId))
         return ResponseEntity.ok(CreateNoteRs(noteId))
     }
 
