@@ -24,7 +24,8 @@ class NoteCommandService(
 
         val note = Note(
             bookId = bookId,
-            content = command.content
+            content = command.content,
+            pageNumber = command.pageNumber
         )
         return requireNotNull(noteRepository.save(note).id)
     }

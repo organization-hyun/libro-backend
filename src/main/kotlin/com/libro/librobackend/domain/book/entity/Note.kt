@@ -12,4 +12,5 @@ class Note(
     val id: Long? = null,
     val bookId: Long,
     val content: String,
+    val pageNumber: Int? = null,
 ) : BaseTimeEntity()
