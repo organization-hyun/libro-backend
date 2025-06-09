@@ -1,6 +1,6 @@
-package com.libro.librobackend.domain.book.controller.rqrs
+package com.libro.librobackend.domain.readingrecord.controller.rqrs
 
-import com.libro.librobackend.domain.book.entity.Note
+import com.libro.librobackend.domain.readingrecord.entity.Note
 
 data class NoteRs(
     val id: Long,
