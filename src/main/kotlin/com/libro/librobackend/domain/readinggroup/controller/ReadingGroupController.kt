@@ -1,10 +1,12 @@
 package com.libro.librobackend.domain.readinggroup.controller
 
+import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupDetailRs
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupRs
 import com.libro.librobackend.domain.readinggroup.service.ReadingGroupService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,6 +21,13 @@ class ReadingGroupController(
     fun getReadingGroups(): ResponseEntity<List<ReadingGroupRs>> {
         val readingGroups = readingGroupService.getReadingGroups()
         return ResponseEntity.ok(readingGroups.map { ReadingGroupRs.from(it) })
+    }
+
+    @Operation(summary = "독서 모임 조회")
+    @GetMapping("/{readingGroupId}")
+    fun getReadingGroup(@PathVariable readingGroupId: Long): ResponseEntity<ReadingGroupDetailRs> {
+        val readingGroup = readingGroupService.getReadingGroup(readingGroupId)
+        return ResponseEntity.ok(ReadingGroupDetailRs.from(readingGroup))
     }
 
 }

@@ -9,4 +9,7 @@ class ReadingGroupService(
     val readingGroupRepository: ReadingGroupRepository
 ) {
     fun getReadingGroups(): List<ReadingGroup> = readingGroupRepository.findAll()
+
+    fun getReadingGroup(readingGroupId: Long): ReadingGroup =
+        readingGroupRepository.findById(readingGroupId).orElseThrow()
 }
