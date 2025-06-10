@@ -1,10 +1,7 @@
 package com.libro.librobackend.domain.readinggroup.entity
 
 import com.libro.librobackend.domain.common.BaseTimeEntity
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 class ReadingGroup(
@@ -12,5 +9,16 @@ class ReadingGroup(
     val id: Long? = null,
     val bookTitle: String,
     val bookAuthor: String,
-    val description: String
-) : BaseTimeEntity()
+    val description: String,
+    @OneToMany(mappedBy = "readingGroup", cascade = [CascadeType.PERSIST])
+    val sharedReadingRecords: MutableList<SharedReadingRecord> = mutableListOf()
+) : BaseTimeEntity() {
+    fun addReadingRecord(readingRecordId: Long) {
+        sharedReadingRecords.add(
+            SharedReadingRecord(
+                readingGroup = this,
+                readingRecordId = readingRecordId
+            )
+        )
+    }
+}

@@ -1,15 +1,14 @@
 package com.libro.librobackend.domain.readinggroup.controller
 
+import com.libro.librobackend.config.security.annotation.CurrentUserId
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupDetailRs
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupRs
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.SharedReadingRecordRs
 import com.libro.librobackend.domain.readinggroup.service.ReadingGroupService
+import com.libro.librobackend.domain.readingrecord.controller.rqrs.SharedReadingRecordRq
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/reading-groups")
@@ -35,7 +34,18 @@ class ReadingGroupController(
     @GetMapping("/{readingGroupId}/shared-reading-records")
     fun getSharedReadingRecords(@PathVariable readingGroupId: Long): ResponseEntity<List<SharedReadingRecordRs>> {
         val records = readingGroupService.getSharedReadingRecords(readingGroupId)
-        return ResponseEntity.ok(records.map{ SharedReadingRecordRs.from(it) })
+        return ResponseEntity.ok(records.map { SharedReadingRecordRs.from(it) })
+    }
+
+    @Operation(summary = "독서기록 공유")
+    @PostMapping("/{readingGroupId}/shared-reading-record")
+    fun saveSharedReadingRecord(
+        @CurrentUserId userId: Long,
+        @PathVariable readingGroupId: Long,
+        @RequestBody rq: SharedReadingRecordRq
+    ): ResponseEntity<Void> {
+        readingGroupService.saveSharedReadingRecord(rq.toCommand(userId, readingGroupId))
+        return ResponseEntity.noContent().build()
     }
 
 }
