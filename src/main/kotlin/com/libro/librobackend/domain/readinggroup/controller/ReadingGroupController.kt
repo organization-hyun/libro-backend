@@ -2,6 +2,7 @@ package com.libro.librobackend.domain.readinggroup.controller
 
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupDetailRs
 import com.libro.librobackend.domain.readinggroup.controller.rqrs.ReadingGroupRs
+import com.libro.librobackend.domain.readinggroup.controller.rqrs.SharedReadingRecordRs
 import com.libro.librobackend.domain.readinggroup.service.ReadingGroupService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
@@ -28,6 +29,13 @@ class ReadingGroupController(
     fun getReadingGroup(@PathVariable readingGroupId: Long): ResponseEntity<ReadingGroupDetailRs> {
         val readingGroup = readingGroupService.getReadingGroup(readingGroupId)
         return ResponseEntity.ok(ReadingGroupDetailRs.from(readingGroup))
+    }
+
+    @Operation(summary = "공유된 독서기록 조회")
+    @GetMapping("/{readingGroupId}/shared-reading-records")
+    fun getSharedReadingRecords(@PathVariable readingGroupId: Long): ResponseEntity<List<SharedReadingRecordRs>> {
+        val records = readingGroupService.getSharedReadingRecords(readingGroupId)
+        return ResponseEntity.ok(records.map{ SharedReadingRecordRs.from(it) })
     }
 
 }
