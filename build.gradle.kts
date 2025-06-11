@@ -4,6 +4,7 @@ plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	kotlin("plugin.jpa") version "1.9.25"
+	id("org.jetbrains.kotlin.kapt") version "1.9.25"
 	id("org.springframework.boot") version "3.5.0"
 	id("io.spring.dependency-management") version "1.1.7"
 }
@@ -22,7 +23,7 @@ repositories {
 }
 
 dependencies {
-	// 기본 Spring + Kotlin
+	// Spring 기본 의존성
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -40,6 +41,10 @@ dependencies {
 
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
+	// ✅ QueryDSL (kapt 기반, jakarta 호환)
+	implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
 
 	// 테스트
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -60,12 +65,26 @@ allOpen {
 	annotation("jakarta.persistence.Embeddable")
 }
 
-// 테스트는 JUnit5 사용
+// kapt 설정 (QClass 생성 위치 지정 — 필수 아님, 있어도 OK)
+kapt {
+	arguments {
+		arg("querydsl.entityPathBasePackage", "com.libro.querydsl")
+	}
+}
+
+// 소스셋 설정 (QClass 경로 포함)
+sourceSets {
+	main {
+		java {
+			srcDirs("src/main/kotlin", "build/generated/source/kapt/main")
+		}
+	}
+}
+
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-// Kotlin 컴파일 설정
 tasks.withType<KotlinCompile>().configureEach {
 	kotlinOptions {
 		jvmTarget = "17"
