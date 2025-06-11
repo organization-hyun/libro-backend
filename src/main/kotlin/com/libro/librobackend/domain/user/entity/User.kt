@@ -10,6 +10,7 @@ import jakarta.persistence.Id
 class User(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
+    val name: String,
     val email: String,
     val password: String,
 ) : BaseTimeEntity()

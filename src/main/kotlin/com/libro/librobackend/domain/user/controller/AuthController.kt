@@ -19,7 +19,7 @@ class AuthController(
 
     @Operation(summary = "회원 가입")
     @PostMapping("/signup")
-    fun signup(@RequestBody request: SignupRq) = authService.signup(request.email, request.password)
+    fun signup(@RequestBody request: SignupRq) = authService.signup(request.name, request.email, request.password)
 
     @Operation(summary = "로그인")
     @PostMapping("/login")

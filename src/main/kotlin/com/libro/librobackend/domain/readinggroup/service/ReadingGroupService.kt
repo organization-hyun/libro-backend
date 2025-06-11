@@ -7,7 +7,6 @@ import com.libro.librobackend.domain.readinggroup.service.dto.SharedReadingRecor
 import com.libro.librobackend.domain.readingrecord.repository.ReadingRecordRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
 
 @Service
 @Transactional(readOnly = true)
@@ -21,22 +20,7 @@ class ReadingGroupService(
         readingGroupRepository.findById(readingGroupId).orElseThrow()
 
     fun getSharedReadingRecords(readingGroupId: Long): List<SharedReadingRecordDto> {
-        // 더미 데이터 응답
-        // TODO 로직 구현
-        return listOf(
-            SharedReadingRecordDto(
-                readingRecordId = 1L,
-                writerName = "홍길동",
-                review = "이 책 정말 좋았어요!",
-                sharedDate = LocalDate.of(2025, 6, 1)
-            ),
-            SharedReadingRecordDto(
-                readingRecordId = 2L,
-                writerName = "김철수",
-                review = "생각보다 지루했어요.",
-                sharedDate = LocalDate.of(2025, 6, 10)
-            )
-        )
+        return readingGroupRepository.findSharedReadingRecords(readingGroupId)
     }
 
     @Transactional

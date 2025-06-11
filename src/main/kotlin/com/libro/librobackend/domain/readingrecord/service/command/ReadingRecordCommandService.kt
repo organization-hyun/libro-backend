@@ -13,7 +13,7 @@ class ReadingRecordCommandService(
 ) {
 
     fun saveReadingRecord(command: CreateReadingRecordCommand): Long {
-        val readingRecord = ReadingRecord(
+        val readingRecord = ReadingRecord.create(
             bookTitle = command.bookTitle,
             bookAuthor = command.bookAuthor,
             userId = command.userId

@@ -12,12 +12,12 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtUtil: JwtUtil,
 ) {
-    fun signup(email: String, password: String): User {
+    fun signup(name: String, email: String, password: String): User {
         if (userRepository.findByEmail(email) != null) {
             throw IllegalArgumentException("이미 존재하는 이메일입니다.")
         }
         val encodedPassword = passwordEncoder.encode(password)
-        val user = User(email = email, password = encodedPassword)
+        val user = User(name = name, email = email, password = encodedPassword)
         return userRepository.save(user)
     }
 
