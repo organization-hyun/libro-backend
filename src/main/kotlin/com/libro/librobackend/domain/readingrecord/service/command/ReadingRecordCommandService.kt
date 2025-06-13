@@ -14,8 +14,7 @@ class ReadingRecordCommandService(
 
     fun saveReadingRecord(command: CreateReadingRecordCommand): Long {
         val readingRecord = ReadingRecord.create(
-            bookTitle = command.bookTitle,
-            bookAuthor = command.bookAuthor,
+            bookId = command.bookId,
             userId = command.userId
         )
         return requireNotNull(readingRecordRepository.save(readingRecord).id)

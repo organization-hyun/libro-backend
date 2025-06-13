@@ -12,6 +12,7 @@ class ReadingRecord(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val userId: Long,
+    val bookId: Long,
     val bookTitle: String,
     val bookAuthor: String,
     val review: String?,
@@ -22,11 +23,12 @@ class ReadingRecord(
     }
 
     companion object {
-        fun create(bookTitle: String, bookAuthor: String, userId: Long): ReadingRecord {
+        fun create(bookId: Long, userId: Long): ReadingRecord {
             return ReadingRecord(
                 userId = userId,
-                bookTitle = bookTitle,
-                bookAuthor = bookAuthor,
+                bookId = bookId,
+                bookTitle = "",
+                bookAuthor = "",
                 review = null,
                 reviewDate = null
             )
