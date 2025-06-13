@@ -13,17 +13,17 @@ class ReadingGroupRepositoryImpl(
     override fun findSharedReadingRecords(readingGroupId: Long): List<SharedReadingRecordDto> {
         return jpaQueryFactory.select(
             Projections.constructor(
-            SharedReadingRecordDto::class.java,
-            sharedReadingRecord.readingRecordId,
+                SharedReadingRecordDto::class.java,
+                sharedReadingRecord.readingRecordId,
                 user.name,
                 readingRecord.review,
                 readingRecord.reviewDate
-            ))
+            )
+        )
             .from(sharedReadingRecord)
             .join(readingRecord).on(sharedReadingRecord.readingRecordId.eq(readingRecord.id))
             .join(user).on(readingRecord.userId.eq(user.id))
             .where(sharedReadingRecord.readingGroup.id.eq(readingGroupId))
             .fetch()
-
     }
 }

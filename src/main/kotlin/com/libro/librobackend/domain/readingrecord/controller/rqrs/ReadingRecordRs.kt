@@ -1,6 +1,6 @@
 package com.libro.librobackend.domain.readingrecord.controller.rqrs
 
-import com.libro.librobackend.domain.readingrecord.entity.ReadingRecord
+import com.libro.librobackend.domain.readingrecord.service.query.dto.ReadingRecordDto
 
 data class ReadingRecordRs(
     val id: Long,
@@ -8,7 +8,7 @@ data class ReadingRecordRs(
     val bookAuthor: String
 ) {
     companion object {
-        fun from(readingRecord: ReadingRecord): ReadingRecordRs {
+        fun from(readingRecord: ReadingRecordDto): ReadingRecordRs {
             val readingRecordId = requireNotNull(readingRecord.id)
             return ReadingRecordRs(
                 id = readingRecordId,

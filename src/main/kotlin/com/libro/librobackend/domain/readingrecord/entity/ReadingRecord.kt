@@ -13,8 +13,6 @@ class ReadingRecord(
     val id: Long? = null,
     val userId: Long,
     val bookId: Long,
-    val bookTitle: String,
-    val bookAuthor: String,
     val review: String?,
     val reviewDate: LocalDate?
 ) : BaseTimeEntity() {
@@ -27,8 +25,6 @@ class ReadingRecord(
             return ReadingRecord(
                 userId = userId,
                 bookId = bookId,
-                bookTitle = "",
-                bookAuthor = "",
                 review = null,
                 reviewDate = null
             )
