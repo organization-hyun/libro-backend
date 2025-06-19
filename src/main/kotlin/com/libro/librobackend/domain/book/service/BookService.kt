@@ -8,7 +8,13 @@ import org.springframework.stereotype.Service
 class BookService(
     private val bookRepository: BookRepository
 ) {
+
     fun getBooks(): List<Book> {
         return bookRepository.findAll()
     }
+
+    fun searchBooks(q: String) : List<Book> {
+        return bookRepository.findAllByTitleContains(q)
+    }
+
 }

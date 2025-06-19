@@ -12,4 +12,5 @@ class Book(
     val id: Long? = null,
     val title: String,
     val author: String,
+    val description: String,
 ) : BaseTimeEntity()
