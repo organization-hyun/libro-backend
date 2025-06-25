@@ -16,6 +16,10 @@ class BookService(
         return bookRepository.findAll()
     }
 
+    fun searchBooks(q: String) : List<Book> {
+        return bookRepository.findAllByTitleContains(q)
+    }
+
     @Transactional
     fun wishBook(userId: Long, bookId: Long) {
 
@@ -25,4 +29,5 @@ class BookService(
             status = UserBookStatusEnum.WISH
         )
     }
+
 }

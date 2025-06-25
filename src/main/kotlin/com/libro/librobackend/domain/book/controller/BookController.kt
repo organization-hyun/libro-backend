@@ -17,6 +17,13 @@ class BookController(
     fun getBooks(): List<BookRs> =
         bookService.getBooks().map { BookRs.from(it) }
 
+    @Operation(summary = "도서 검색")
+    @GetMapping("/search")
+    fun searchBooks(@RequestParam q: String): ResponseEntity<List<BookRs>> {
+        val books = bookService.searchBooks(q)
+        return ResponseEntity.ok(books.map { BookRs.from(it) })
+    }
+
     @Operation(summary = "도서별 사용자의 읽고싶어요 등록")
     @PostMapping("/{bookId}/wish")
     fun wishBook(
@@ -26,8 +33,5 @@ class BookController(
         bookService.wishBook(userId, bookId)
         return ResponseEntity.noContent().build()
     }
-
-
-
 
 }

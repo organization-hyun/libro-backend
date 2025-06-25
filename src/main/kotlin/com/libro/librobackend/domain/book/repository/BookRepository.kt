@@ -4,4 +4,6 @@ import com.libro.librobackend.domain.book.entity.Book
 import org.springframework.data.jpa.repository.JpaRepository
 
 
-interface BookRepository : JpaRepository<Book, Long>
+interface BookRepository : JpaRepository<Book, Long> {
+    fun findAllByTitleContains(q: String): List<Book>
+}
