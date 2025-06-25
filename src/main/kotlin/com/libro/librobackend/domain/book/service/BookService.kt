@@ -10,16 +10,22 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional(readOnly = true)
 class BookService(
     private val bookRepository: BookRepository,
     private val userBookStatusRepository: UserBookStatusRepository,
 ) {
+
     fun getBooks(): List<Book> {
         return bookRepository.findAll()
     }
 
     fun searchBooks(q: String) : List<Book> {
         return bookRepository.findAllByTitleContains(q)
+    }
+
+    fun getBook(bookId: Long): Book {
+        return bookRepository.findById(bookId).orElseThrow()
     }
 
     @Transactional

@@ -24,6 +24,13 @@ class BookController(
         return ResponseEntity.ok(books.map { BookRs.from(it) })
     }
 
+    @Operation(summary = "도서 정보 조회")
+    @GetMapping("/{bookId}")
+    fun getBook(@PathVariable bookId: Long): ResponseEntity<BookRs> {
+        val book = bookService.getBook(bookId)
+        return ResponseEntity.ok(BookRs.from(book))
+    }
+
     @Operation(summary = "도서별 사용자의 읽고싶어요 등록")
     @PostMapping("/{bookId}/wish")
     fun wishBook(
