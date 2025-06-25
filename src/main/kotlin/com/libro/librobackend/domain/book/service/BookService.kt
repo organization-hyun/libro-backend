@@ -1,6 +1,8 @@
 package com.libro.librobackend.domain.book.service
 
+import com.libro.librobackend.domain.book.controller.UserBookStatusRs
 import com.libro.librobackend.domain.book.entity.Book
+import com.libro.librobackend.domain.book.entity.UserBookStatus
 import com.libro.librobackend.domain.book.enums.UserBookStatusEnum
 import com.libro.librobackend.domain.book.repository.BookRepository
 import com.libro.librobackend.domain.book.repository.UserBookStatusRepository
@@ -22,12 +24,17 @@ class BookService(
 
     @Transactional
     fun wishBook(userId: Long, bookId: Long) {
-
-        userBookStatusRepository.insertWishBook(
+        UserBookStatus(
             userId = userId,
             bookId = bookId,
-            status = UserBookStatusEnum.WISH
-        )
+            userBookStatusEnum = UserBookStatusEnum.WISH
+        ).let { userBookStatus ->
+            userBookStatusRepository.save(userBookStatus)
+        }
+    }
+
+    fun searchUserBookStatus(userId: Long, bookId: Long): UserBookStatusRs {
+        return UserBookStatusRs.from(userBookStatusRepository.findByUserIdAndBookId(userId, bookId))
     }
 
 }

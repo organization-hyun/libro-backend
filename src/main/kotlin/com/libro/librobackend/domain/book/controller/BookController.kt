@@ -34,4 +34,14 @@ class BookController(
         return ResponseEntity.noContent().build()
     }
 
+    @Operation(summary = "특정 도서의 현재 사용자가 갖고 있는 상태 조회")
+    @GetMapping("/{bookId}/status")
+    fun searchUserBookStatus(
+        @CurrentUserId userId: Long,
+        @PathVariable bookId: Long
+    ): ResponseEntity<UserBookStatusRs> {
+        val searchUserBookStatus = bookService.searchUserBookStatus(userId, bookId)
+        return ResponseEntity.ok(searchUserBookStatus)
+    }
+
 }
