@@ -1,6 +1,8 @@
 package com.libro.librobackend.domain.book.controller
 
 import com.libro.librobackend.config.security.annotation.CurrentUserId
+import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
+import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRs
 import com.libro.librobackend.domain.book.service.BookService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
@@ -11,6 +13,13 @@ import org.springframework.web.bind.annotation.*
 class BookController(
     private val bookService: BookService
 ) {
+
+    @Operation(summary = "도서 등록")
+    @PostMapping
+    fun createBook(@RequestBody rq: CreateBookRq): ResponseEntity<CreateBookRs> {
+        val bookId = bookService.createBook(rq)
+        return ResponseEntity.ok(CreateBookRs.from(bookId))
+    }
 
     @Operation(summary = "도서 목록 조회")
     @GetMapping
