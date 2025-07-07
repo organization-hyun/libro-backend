@@ -12,7 +12,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 class SecurityConfig(
-    private val jwtFilter: JwtFilter
+    private val jwtFilter: JwtFilter,
+    private val customAuthenticationEntryPoint: CustomAuthenticationEntryPoint
 ) {
 
     @Bean
@@ -36,6 +37,9 @@ class SecurityConfig(
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .exceptionHandling {
+                it.authenticationEntryPoint(customAuthenticationEntryPoint)
+            }
 
         return http.build()
     }
