@@ -1,33 +1,20 @@
-package com.libro.librobackend.domain.book.service
+package com.libro.librobackend.domain.userbook.service
 
 import com.libro.librobackend.domain.book.controller.UserBookStatusRs
 import com.libro.librobackend.domain.book.controller.rqrs.CreateBookRq
 import com.libro.librobackend.domain.book.entity.Book
 import com.libro.librobackend.domain.book.entity.UserBookStatus
 import com.libro.librobackend.domain.book.enums.UserBookStatusEnum
-import com.libro.librobackend.domain.book.repository.BookRepository
 import com.libro.librobackend.domain.book.repository.UserBookStatusRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+
 @Service
 @Transactional(readOnly = true)
-class BookService(
-    private val bookRepository: BookRepository,
+class UserBookInteractionService(
     private val userBookStatusRepository: UserBookStatusRepository,
 ) {
-
-    fun getBooks(): List<Book> {
-        return bookRepository.findAll()
-    }
-
-    fun searchBooks(q: String) : List<Book> {
-        return bookRepository.findAllByTitleContains(q)
-    }
-
-    fun getBook(bookId: Long): Book {
-        return bookRepository.findById(bookId).orElseThrow()
-    }
 
     @Transactional
     fun wishBook(userId: Long, bookId: Long) {
@@ -38,22 +25,9 @@ class BookService(
         ).let { userBookStatus ->
             userBookStatusRepository.save(userBookStatus)
         }
-    } // todo UI 작업, Controller Service 분리 필요 ->userbook - UserBookInteraction
+    }
 
     fun searchUserBookStatus(userId: Long, bookId: Long): UserBookStatusRs {
         return UserBookStatusRs.from(userBookStatusRepository.findByUserIdAndBookId(userId, bookId))
     }
-
-    @Transactional
-    fun createBook(rq: CreateBookRq): Long {
-        val book = bookRepository.save(
-            Book(
-                title = rq.title,
-                author = rq.author,
-                description = rq.description
-            )
-        )
-        return checkNotNull(book.id)
-    }
-
 }
